@@ -24,7 +24,7 @@ def generateOutput(template, template_fields, target_fields):
 
 def determineFileName(csv_heading, csv_target):
     # If we already have a hostname set, use that
-    if csv_heading[0] == '<hostname' and csv_target[0] != '':
+    if csv_heading[0] == '<hostname>' and csv_target[0] != '':
         return '%s.txt' % csv_target[0]
     return 'output%s.txt' % offset
 
@@ -42,5 +42,5 @@ def importTemplate(templateFileName):
 if __name__ == '__main__':
     importedCSV = importCSV('bsr.csv')
     importedTemplate = importTemplate('bsr.txt')
-    generateOutput(importedTemplate, importedCSV)
+    generateOutputFiles(importedTemplate, importedCSV)
     print 'done'

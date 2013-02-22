@@ -18,10 +18,9 @@ def generateOutput(template,csv):
                 outputLines[i] = outputLines[i].replace(csv[0][j],csv[i][j])
 
             outputName = determineFileName(csv, i)
-            outputFile = open(outputName, 'a')
 
-            outputFile.write(outputLines[i])
-            outputFile.close()
+            with open(outputName, 'a') as out:
+                outputFile.write(outputLines[i])
 
 def determineFileName(csv, offset):
     csv_heading = csv[0]

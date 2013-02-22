@@ -2,27 +2,27 @@ def generateOutputFiles(template,csv):
     """Given a template, take all fields matching the first line of the CSV
     and generate a new output file with fields from each other line of the 
     CSV."""
-    outputs = [] * len(csv)
-
-    # Loop through each output file.
-    for i in range(1, len(outputs)):
-        outputs[i] = generateOutput(template, csv[0], csv[i])
     
-def generateOutput(template, template_fields, target_fields):
+    # Loop through each output file.
+    for i in range(1, len(csv)):
+        outName = determineFileName(csv, i)
+        generateOutput(outName, template, csv[0], csv[i])
+    
+def generateOutput(outName, template, template_fields, target_fields):
     """Given a template file, replace all template_fields with target_fields"""
-    outName = determineFileName(template_fields, target_fields)
     out = template
 
     for i in range(1, len(template_fields)):
-        out.replace(template_fields[i], target_fields[i])
+        out = out.replace(template_fields[i], target_fields[i])
 
     # Write replaced version to file
     with open(outName, 'w') as outFile:
         outFile.write(out)
 
-    return out
+def determineFileName(csv, offset):
+    csv_heading = csv[0]
+    csv_target  = csv[offset]
 
-def determineFileName(csv_heading, csv_target):
     # If we already have a hostname set, use that
     if csv_heading[0] == '<hostname>' and csv_target[0] != '':
         return '%s.txt' % csv_target[0]

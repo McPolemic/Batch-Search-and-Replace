@@ -1,34 +1,30 @@
 import string
 
-def generateOutput(template,csv):
-    """ Writes data to the individual files.  i starts at 1 to
-        skip the heading row of the CSV.
-        outputLines is used to store lines from the template to
-        allow the substitutions for writing to the file.
-        After storing all of the substitutions in one outputLines[i],
-        a file is opened with the respective <hostname> value if
-        possible, or output<row number> otherwise. Then the output
-        is written to the output file and the file is closed.        
-    """
-    outputs = [''] * len(csv)
+def generateOutputFiles(template,csv):
+    """Given a template, take all fields matching the first line of the CSV
+    and generate a new output file with fields from each other line of the 
+    CSV."""
+    outputs = [] * len(csv)
 
     # Loop through each output file.
-    for i in range(1, len(csv)):
-        outputs[i] = template
+    for i in range(1, len(outputs)):
+        outputs[i] = generateOutput(template, csv[0], csv[i])
+    
+def generateOutput(template, template_fields, target_fields):
+    """Given a template file, replace all template_fields with target_fields"""
+    outName = determineFileName(template_fields, target_fields)
+    out = template
 
-        # Replace the template field with the corresponding value in the CSV.
-        for j in range(0, len(csv[i])):
-            outputs[i] = outputs[i].replace(csv[0][j],csv[i][j])
+    for i in range(1, len(template_fields)):
+        out.replace(template_fields[i], target_fields[i])
 
-        outputName = determineFileName(csv, i)
+    # Write replaced version to file
+    with open(outName, 'w') as outFile:
+        outFile.write(out)
 
-        with open(outputName, 'a') as out:
-            outputFile.write(outputs[i])
+    return out
 
-def determineFileName(csv, offset):
-    csv_heading = csv[0]
-    csv_target  = csv[offset]
-
+def determineFileName(csv_heading, csv_target):
     # If we already have a hostname set, use that
     if csv_heading[0] == '<hostname' and csv_target[0] != '':
         return '%s.txt' % csv_target[0]

@@ -10,17 +10,20 @@ def generateOutput(template,csv):
         possible, or output<row number> otherwise. Then the output
         is written to the output file and the file is closed.        
     """
-    outputLines = [''] * len(csv)
-    for line in template:
-        for i in range(1, len(csv)):
-            outputLines[i] = line
-            for j in range(0, len(csv[i])):
-                outputLines[i] = outputLines[i].replace(csv[0][j],csv[i][j])
+    outputs = [''] * len(csv)
 
-            outputName = determineFileName(csv, i)
+    # Loop through each output file.
+    for i in range(1, len(csv)):
+        outputs[i] = template
 
-            with open(outputName, 'a') as out:
-                outputFile.write(outputLines[i])
+        # Replace the template field with the corresponding value in the CSV.
+        for j in range(0, len(csv[i])):
+            outputs[i] = outputs[i].replace(csv[0][j],csv[i][j])
+
+        outputName = determineFileName(csv, i)
+
+        with open(outputName, 'a') as out:
+            outputFile.write(outputs[i])
 
 def determineFileName(csv, offset):
     csv_heading = csv[0]
@@ -40,7 +43,7 @@ def importCSV(CSVFileName):
 
 def importTemplate(templateFileName):
     with open(templateFileName,'r') as template:
-        return template.readlines()
+        return template.read()
 
 if __name__ == '__main__':
     importedCSV = importCSV('bsr.csv')

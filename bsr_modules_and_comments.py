@@ -24,21 +24,15 @@ def generateOutput(template,csv):
             outputFile.close()
 
 def importCSV(CSVFileName):
-    """ Reads in each line of CSVFile and converts the
-        comma-separated data into one array per line before
-        storing them in csv[] """
-    csv = []
-    CSVFile = open(CSVFileName,'r')
-    for line in CSVFile:
-        csv.append(line.rstrip('\n').split(','))
-    CSVFile.close()
-    return csv
+    """Loads a CSV file CSVFileName and returns a list of lists "sample[x][y]"
+       where "x" is the line of the CSV and "y" being each element 
+       comma-separated."""
+    with open(CSVFileName,'r') as csv:
+        return [line.rstrip().split(',') for line in csv.readlines()]
 
 def importTemplate(templateFileName):
-    templateFile= open(templateFileName,'r')
-    template = templateFile.readlines()
-    templateFile.close()
-    return template
+    with open(templateFileName,'r') as template:
+        return template.readlines()
 
 importedCSV = importCSV('bsr.csv')
 importedTemplate = importTemplate('bsr.txt')

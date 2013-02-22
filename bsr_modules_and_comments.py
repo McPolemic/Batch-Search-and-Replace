@@ -34,7 +34,8 @@ def importTemplate(templateFileName):
     with open(templateFileName,'r') as template:
         return template.readlines()
 
-importedCSV = importCSV('bsr.csv')
-importedTemplate = importTemplate('bsr.txt')
-generateOutput(importedTemplate, importedCSV)
-print 'done'
+if __name__ == '__main__':
+    importedCSV = importCSV('bsr.csv')
+    importedTemplate = importTemplate('bsr.txt')
+    generateOutput(importedTemplate, importedCSV)
+    print 'done'

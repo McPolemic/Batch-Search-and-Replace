@@ -1,5 +1,3 @@
-import string
-
 def generateOutputFiles(template,csv):
     """Given a template, take all fields matching the first line of the CSV
     and generate a new output file with fields from each other line of the 
